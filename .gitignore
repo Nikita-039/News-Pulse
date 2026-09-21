@@ -1,0 +1,42 @@
+# ── Python ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# ── Node / npm ───────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+
+# ── Frontend build output ────────────────────────────────
+frontend/dist/
+frontend/.vite/
+
+# ── Environment / secrets ────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── IDEs ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Logs ─────────────────────────────────────────────────
+logs/
+*.log

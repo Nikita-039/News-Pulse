@@ -1,0 +1,12 @@
+# ── Core ─────────────────────────────────────────────────
+feedparser==6.0.11
+pymongo[srv]==4.7.3
+python-dotenv==1.0.1
+
+# ── Article extraction ────────────────────────────────────
+trafilatura==1.12.2
+
+# ── Clustering ────────────────────────────────────────────
+scikit-learn==1.5.1
+numpy==1.26.4
+scipy==1.13.1

@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image, based on Debian/Ubuntu
-FROM node:18-bullseye-slim
+FROM node:18-bookworm-slim
 
 # Install Python 3, pip, and virtualenv
 RUN apt-get update && \

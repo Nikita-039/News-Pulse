@@ -1,12 +1,18 @@
 /**
  * client.js — Axios API wrappers for the News Pulse backend.
- * All calls use the /api prefix which Vite proxies to http://localhost:5000.
+ *
+ * Local dev:  Vite proxies /api → http://localhost:5000  (baseURL = '/api')
+ * Production: VITE_API_BASE_URL points directly to the Render backend URL
  */
 
 import axios from 'axios';
 
+// In production VITE_API_BASE_URL = 'https://news-pulse-backend-j25i.onrender.com'
+// In local dev it is undefined, so we fall back to '/api' (Vite proxy)
+const baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL,
   timeout: 30_000,
   headers: { 'Content-Type': 'application/json' },
 });

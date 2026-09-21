@@ -16,7 +16,7 @@ const app = express();
 // ── Middleware ─────────────────────────────────────────────────────────────────
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: process.env.CORS_ORIGIN || '*',
   methods: ['GET', 'POST'],
 }));
 app.use(express.json());
@@ -32,6 +32,21 @@ app.use((req, _res, next) => {
 app.use('/clusters', clustersRouter);
 app.use('/timeline', timelineRouter);
 app.use('/ingest',   ingestRouter);
+
+// Root — friendly status page
+app.get('/', (_req, res) => res.json({
+  service: 'News Pulse API',
+  status:  'ok',
+  version: '1.0.0',
+  endpoints: [
+    'GET  /clusters',
+    'GET  /clusters/:id',
+    'GET  /timeline',
+    'POST /ingest/trigger',
+    'GET  /ingest/status/:jobId',
+    'GET  /health',
+  ],
+}));
 
 // Health-check
 app.get('/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date() }));

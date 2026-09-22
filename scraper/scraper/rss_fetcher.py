@@ -47,7 +47,7 @@ def fetch_feed(source_name: str, feed_url: str) -> list[dict]:
             else:
                 logger.debug("Skipping entry with missing url/title from %s", source_name)
 
-        logger.info("  → %d articles from %s", len(articles), source_name)
+        logger.info("  -> %d articles from %s", len(articles), source_name)
         return articles
 
     except Exception as exc:

@@ -35,7 +35,7 @@ from sklearn.cluster import DBSCAN
 
 logger = logging.getLogger(__name__)
 
-DBSCAN_EPS = float(os.getenv("DBSCAN_EPS", "0.85"))
+DBSCAN_EPS = float(os.getenv("DBSCAN_EPS", "0.95"))
 DBSCAN_MIN_SAMPLES = int(os.getenv("DBSCAN_MIN_SAMPLES", "2"))
 
 

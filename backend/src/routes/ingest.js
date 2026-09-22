@@ -90,7 +90,7 @@ router.post('/trigger', async (_req, res) => {
     // Python pipeline writes its own final status — we only override here
     // if the process exited with a non-zero code AND Python didn't update.
     if (code !== 0) {
-      const finalError = errorLog.trim() ? errorLog.trim().substring(0, 500) : `Process exited with code ${code}`;
+      const finalError = errorLog.trim() ? errorLog.trim().slice(-800) : `Process exited with code ${code}`;
       IngestJob.findByIdAndUpdate(
         jobId,
         { $set: { status: 'failed', error_message: finalError } },

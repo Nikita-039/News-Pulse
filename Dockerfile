@@ -29,6 +29,7 @@ EXPOSE 5000
 
 # Set environment variables so the backend knows where to find Python
 ENV PYTHON_CMD=/app/scraper/.venv/bin/python3
+ENV PYTHONIOENCODING=utf-8
 ENV PORT=5000
 
 # Run the Node.js backend

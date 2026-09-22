@@ -6,6 +6,7 @@ python-dotenv==1.0.1
 # ── Article extraction ────────────────────────────────────
 trafilatura==1.12.2
 html5lib==1.1
+lxml_html_clean==0.4.1
 
 # ── Clustering ────────────────────────────────────────────
 scikit-learn==1.5.1

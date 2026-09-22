@@ -87,7 +87,7 @@ router.post('/trigger', async (_req, res) => {
     if (code !== 0) {
       IngestJob.findByIdAndUpdate(
         jobId,
-        { $setOnInsert: { status: 'failed', error_message: `Process exited with code ${code}` } },
+        { $set: { status: 'failed', error_message: `Process exited with code ${code}` } },
         { upsert: false }
       ).catch(() => {});
     }

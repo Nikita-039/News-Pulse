@@ -8,7 +8,7 @@
 
 ```
 RSS Feeds  ──►  Python Scraper  ──►  MongoDB Atlas  ◄──  Node.js API  ◄──  React Frontend
-  BBC            feedparser +              ▲             Express.js          Vite + vis-timeline
+  BBC            feedparser +              ▲             Express.js          Vite + Custom CSS
   NPR            trafilatura               │             5 REST endpoints
   Guardian       TF-IDF + DBSCAN     same cluster ←─────────────────────────────────────────
 ```
@@ -49,7 +49,7 @@ News Pulse/
 - Cosine similarity on TF-IDF vectors is well-studied and effective for short news texts.
 
 **Parameters:**
-- `eps=0.55` — two articles are in the same cluster if their cosine distance ≤ 0.55 (similarity ≥ 0.45). Tunable via `DBSCAN_EPS` env var.
+- `eps=0.95` — two articles are in the same cluster if their cosine distance ≤ 0.95 (similarity ≥ 0.05). Tunable via `DBSCAN_EPS` env var.
 - `min_samples=2` — a cluster requires at least 2 articles. Tunable via `DBSCAN_MIN_SAMPLES`.
 
 **Known limitation:**
@@ -141,7 +141,7 @@ Open **http://localhost:5173** — click **Refresh Data** to run the first inges
 |---|---|---|
 | `MONGODB_URI` | — | **Required.** Atlas connection string |
 | `DB_NAME` | `news_pulse` | Database name |
-| `DBSCAN_EPS` | `0.55` | DBSCAN distance threshold |
+| `DBSCAN_EPS` | `0.95` | DBSCAN distance threshold |
 | `DBSCAN_MIN_SAMPLES` | `2` | Min articles per cluster |
 
 ### `backend/.env`
@@ -152,7 +152,24 @@ Open **http://localhost:5173** — click **Refresh Data** to run the first inges
 | `DB_NAME` | `news_pulse` | Must match scraper `DB_NAME` |
 | `PORT` | `5000` | API server port |
 | `PYTHON_CMD` | `python` | Python executable name |
-| `CORS_ORIGIN` | `http://localhost:5173` | Allowed frontend origin |
+
+---
+
+## Deployment
+
+### Backend + Scraper (Render)
+The backend and Python scraper are containerised together using the provided `Dockerfile`.
+1. Create a new **Web Service** on [Render](https://render.com).
+2. Connect your GitHub repository.
+3. Select **Docker** as the environment.
+4. Add the `MONGODB_URI` environment variable.
+5. Deploy.
+
+### Frontend (Vercel)
+1. Import your GitHub repository to [Vercel](https://vercel.com).
+2. Set the Root Directory to `frontend`.
+3. Add `VITE_API_BASE_URL` environment variable pointing to your deployed Render URL (e.g. `https://your-backend.onrender.com`).
+4. Deploy.
 
 ---
 
@@ -166,5 +183,5 @@ Open **http://localhost:5173** — click **Refresh Data** to run the first inges
 | Database | MongoDB Atlas (`pymongo` / `mongoose`) |
 | API | Node.js + Express |
 | Frontend | React 18 + Vite |
-| Timeline UI | `vis-timeline` |
+| Timeline UI | Custom CSS Layout |
 | Styling | Vanilla CSS (dark glassmorphism) |

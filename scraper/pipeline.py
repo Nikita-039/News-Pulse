@@ -83,25 +83,25 @@ def run_pipeline(job_id: str | None = None) -> dict:
 
     try:
         # ── Step 1: Fetch RSS ──────────────────────────────────────────────────
-        logger.info("━━━ Step 1 / 7 — Fetching RSS feeds ━━━")
+        logger.info("--- Step 1 / 7 - Fetching RSS feeds ---")
         raw_articles = fetch_all_feeds()
         logger.info("Fetched %d raw articles from all feeds.", len(raw_articles))
 
         # ── Step 2: Deduplicate ────────────────────────────────────────────────
-        logger.info("━━━ Step 2 / 7 — Deduplication ━━━")
+        logger.info("--- Step 2 / 7 - Deduplication ---")
         new_articles, skipped = filter_new_articles(raw_articles)
         logger.info("New: %d  |  Already in DB: %d", len(new_articles), skipped)
 
         # ── Step 3: Extract full content ───────────────────────────────────────
         if new_articles:
-            logger.info("━━━ Step 3 / 7 — Extracting article content (%d articles) ━━━",
+            logger.info("--- Step 3 / 7 - Extracting article content (%d articles) ---",
                         len(new_articles))
             new_articles = enrich_articles(new_articles)
         else:
             logger.info("Step 3 skipped — no new articles to enrich.")
 
         # ── Step 4: Save new articles ──────────────────────────────────────────
-        logger.info("━━━ Step 4 / 7 — Saving new articles ━━━")
+        logger.info("--- Step 4 / 7 - Saving new articles ---")
         saved = 0
         for article in new_articles:
             if insert_article(article):
@@ -109,19 +109,19 @@ def run_pipeline(job_id: str | None = None) -> dict:
         logger.info("Saved %d new articles to MongoDB.", saved)
 
         # ── Step 5: Load ALL articles for clustering ───────────────────────────
-        logger.info("━━━ Step 5 / 7 — Loading full article corpus ━━━")
+        logger.info("--- Step 5 / 7 - Loading full article corpus ---")
         all_articles = get_all_articles()
         logger.info(
             "Corpus size: %d articles (existing + new).", len(all_articles)
         )
 
         # ── Step 6: Cluster ────────────────────────────────────────────────────
-        logger.info("━━━ Step 6 / 7 — Clustering articles ━━━")
+        logger.info("--- Step 6 / 7 - Clustering articles ---")
         cluster_docs, url_to_cluster_idx = cluster_articles(all_articles)
         logger.info("Generated %d clusters.", len(cluster_docs))
 
         # ── Step 7: Persist clusters + update articles ─────────────────────────
-        logger.info("━━━ Step 7 / 7 — Persisting clusters ━━━")
+        logger.info("--- Step 7 / 7 - Persisting clusters ---")
         cluster_ids = drop_and_insert_clusters(cluster_docs)
 
         updated_articles = 0
@@ -179,7 +179,7 @@ def main() -> None:
 
     try:
         result = run_pipeline(job_id=args.job_id)
-        print(f"\nDone ✓  {result}")
+        print(f"\nDone OK  {result}")
         sys.exit(0)
     except Exception as exc:
         print(f"\nPipeline error: {exc}", file=sys.stderr)

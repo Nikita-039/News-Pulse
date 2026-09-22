@@ -65,9 +65,14 @@ router.post('/trigger', async (_req, res) => {
   registerJob(jobId, proc);
   console.log(`[Ingest] Job ${jobId} started (PID ${proc.pid})`);
 
+  let errorLog = '';
+
   // Log pipeline stdout/stderr for debugging
   proc.stdout?.on('data', (data) => process.stdout.write(`[Pipeline] ${data}`));
-  proc.stderr?.on('data', (data) => process.stderr.write(`[Pipeline ERR] ${data}`));
+  proc.stderr?.on('data', (data) => {
+    process.stderr.write(`[Pipeline ERR] ${data}`);
+    errorLog += data.toString();
+  });
 
   proc.on('error', async (err) => {
     console.error(`[Ingest] Job ${jobId} process error:`, err);
@@ -85,9 +90,10 @@ router.post('/trigger', async (_req, res) => {
     // Python pipeline writes its own final status — we only override here
     // if the process exited with a non-zero code AND Python didn't update.
     if (code !== 0) {
+      const finalError = errorLog.trim() ? errorLog.trim().substring(0, 500) : `Process exited with code ${code}`;
       IngestJob.findByIdAndUpdate(
         jobId,
-        { $set: { status: 'failed', error_message: `Process exited with code ${code}` } },
+        { $set: { status: 'failed', error_message: finalError } },
         { upsert: false }
       ).catch(() => {});
     }

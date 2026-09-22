@@ -49,10 +49,10 @@ def _ensure_indexes():
     """Create indexes idempotently on first connection."""
     db = _db
     db.articles.create_index([("url", ASCENDING)], unique=True)
-    db.articles.create_index([("published_at", ASCENDING)], name="published_at_asc")
-    db.articles.create_index([("cluster_id", ASCENDING)], name="cluster_id_asc")
-    db.clusters.create_index([("created_at", ASCENDING)], name="clusters_created_at")
-    db.ingest_jobs.create_index([("_id", ASCENDING)], name="ingest_jobs_id")
+    db.articles.create_index([("published_at", ASCENDING)])
+    db.articles.create_index([("cluster_id", ASCENDING)])
+    db.clusters.create_index([("created_at", ASCENDING)])
+    db.ingest_jobs.create_index([("_id", ASCENDING)])
 
 
 def close():
